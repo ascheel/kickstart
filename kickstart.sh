@@ -29,12 +29,21 @@ then
         sudo apt install -y \
             python3 \
             python3-venv \
-            build-essential
+            build-essential \
+            git
     else
         echo "Python3 already installed."
     fi
     # End Install Python3
 fi
+
+# Configure git
+fgrep "email =" ~/.gitconfig >/dev/null 2>&1 || git config --global user.email "ascheel@gmail.com"
+fgrep "name =" ~/.gitconfig >/dev/null 2>&1 || git config --global user.name "Art Scheel"
+
+# Configure SSH
+[[ ! -d "~/.ssh" ]] && mkdir ~/.ssh
+chmod 700 ~/.ssh
 
 # Install Pip
 curl -s https://bootstrap.pypa.io/get-pip.py | python3
