@@ -1,0 +1,7 @@
+git:
+  email: ascheel@gmail.com
+  name: ascheel
+modules:
+  # Not yet implemented
+  cursor:
+    enabled: false
