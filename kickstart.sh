@@ -7,6 +7,12 @@ CONFIGFILE="${SCRIPT_DIR}/kickstart.yml"
 YQ_VERSION="v4.45.2"
 YQ_PACKAGE="yq_linux_amd64"
 YQ_DESTINATION="${HOME}/.local/bin/yq"
+if [[ -n "$WSL_DISTRO_NAME" ]]; then
+	# We're in WSL, so we need to adjust the paths for Windows
+	ISWSL=true
+else
+	unset ISWSL
+fi
 
 pushd () {
 	# This exists just so we can suppress stdout
@@ -75,5 +81,8 @@ source $SCRIPT_DIR/scripts/kickstart.ssh.sh
 
 # Configure git
 source $SCRIPT_DIR/scripts/kickstart.git.sh
+
+# Install GoInventory
+source $SCRIPT_DIR/scripts/kickstart.goinventory_install.sh
 
 popd
