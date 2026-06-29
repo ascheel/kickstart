@@ -5,3 +5,7 @@ modules:
   # Not yet implemented
   cursor:
     enabled: false
+apt:
+  packages:
+    - git
+    - tmux

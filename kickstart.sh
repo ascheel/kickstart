@@ -27,8 +27,9 @@ popd () {
 install_yq_jq() {
 	if ! which yq >/dev/null 2>&1; then
 		echo "Installing yq"
-		sudo curl -L https://github.com/mikefarah/yq/releases/latest/download/${YQ_PACKAGE} -o "${YQ_DESTINATION}" && \
-		sudo chmod +x "${YQ_DESTINATION}"
+		#sudo curl -L https://github.com/mikefarah/yq/releases/latest/download/${YQ_PACKAGE} -o "${YQ_DESTINATION}" && \
+		#sudo chmod +x "${YQ_DESTINATION}"
+		sudo apt install yq -y
 	fi
 	if ! which jq >/dev/null 2>&1; then
 		echo "Installing jq"
@@ -36,7 +37,7 @@ install_yq_jq() {
 	fi
 }
 
-if [[ "$(python3 "${SCRIPT_DIR}/scripts/getos.py" --distro)" == "ubuntu" ]]
+if [[ "$(python3 "${SCRIPT_DIR}/scripts/getos.py" --distro)" == "ubuntu" || "$(python3 "${SCRIPT_DIR}/scripts/getos.py" --distro)" == "mint" ]]
 then
 	# Ubuntu only
 	# Check if apt update was run in the last 30 minutes
@@ -54,7 +55,7 @@ then
 	install_yq_jq
 
 	# Install packages from apt
-	for package in $(yq -r '.apt.packages' "${CONFIGFILE}" -o json | jq -r "@sh" | tr -d "'"); do
+	for package in $(yq -r '.apt.packages[]' "${CONFIGFILE}"); do
 		echo "Checking if $package is installed"
 		if ! dpkg -s $package >/dev/null 2>&1; then
 			echo "Installing $package"
