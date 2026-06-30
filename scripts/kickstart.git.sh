@@ -15,8 +15,7 @@ fi
 # No name configured?
 if ! fgrep "name = " $GITCONFIG >/dev/null 2>&1; then
 	echo "Git name not configured.  Configuring."
-	_name=$(yq -r '.git.name' "${CONFIGFILE}")
-	git config --global user.name "Art Scheel"
+	git config --global user.name "$(yq -r '.git.name' "${CONFIGFILE}")"
 fi
 
 if ! fgrep "github.com" ~/.ssh/config >/dev/null 2>&1; then

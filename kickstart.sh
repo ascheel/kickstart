@@ -4,9 +4,6 @@ set -e
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
 CONFIGFILE="${SCRIPT_DIR}/kickstart.yml"
-YQ_VERSION="v4.45.2"
-YQ_PACKAGE="yq_linux_amd64"
-YQ_DESTINATION="${HOME}/.local/bin/yq"
 if [[ -n "$WSL_DISTRO_NAME" ]]; then
 	# We're in WSL, so we need to adjust the paths for Windows
 	ISWSL=true
@@ -37,9 +34,17 @@ install_yq_jq() {
 	fi
 }
 
-if [[ "$(python3 "${SCRIPT_DIR}/scripts/getos.py" --distro)" == "ubuntu" || "$(python3 "${SCRIPT_DIR}/scripts/getos.py" --distro)" == "mint" ]]
-then
-	# Ubuntu only
+if [[ -f /etc/os-release ]]; then
+	# shellcheck disable=SC1091
+	source /etc/os-release
+elif [[ -f /usr/lib/os-release ]]; then
+	# shellcheck disable=SC1091
+	source /usr/lib/os-release
+fi
+
+case "${ID,,}" in
+ubuntu|linuxmint|debian)
+	# Debian-family (apt-based)
 	# Check if apt update was run in the last 30 minutes
 	APT_UPDATE_FILE="/var/lib/apt/periodic/update-success-stamp"
 	if [[ ! -f "$APT_UPDATE_FILE" ]] || [[ $(($(date +%s) - $(stat -c %Y "$APT_UPDATE_FILE"))) -gt 1800 ]]; then
@@ -62,7 +67,8 @@ then
 			sudo apt install -y $package
 		fi
 	done
-fi
+	;;
+esac
 
 pushd ~
 
@@ -86,10 +92,10 @@ source $SCRIPT_DIR/scripts/kickstart.ssh.sh
 # Configure git
 source $SCRIPT_DIR/scripts/kickstart.git.sh
 
-# Install GoInventory
-source $SCRIPT_DIR/scripts/kickstart.goinventory_install.sh
-
 # Install VSCodium
 source $SCRIPT_DIR/scripts/kickstart.vscodium.sh
+
+# Install Fonts
+source $SCRIPT_DIR/scripts/kickstart.fonts.sh
 
 popd
