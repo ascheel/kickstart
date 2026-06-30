@@ -71,6 +71,9 @@ export TMPDIR="${SCRIPT_DIR}"/tmp
 [[ ! -d "${TMPDIR}" ]] && mkdir "${TMPDIR}"
 # [[ ! -d "${SCRIPT_DIR}"/tmp ]] && mkdir "${SCRIPT_DIR}"/tmp
 
+# Copy Home Files
+source $SCRIPT_DIR/scripts/kickstart.homefiles.sh
+
 # Install Golang
 source $SCRIPT_DIR/scripts/kickstart.golang.sh
 
@@ -85,5 +88,8 @@ source $SCRIPT_DIR/scripts/kickstart.git.sh
 
 # Install GoInventory
 source $SCRIPT_DIR/scripts/kickstart.goinventory_install.sh
+
+# Install VSCodium
+source $SCRIPT_DIR/scripts/kickstart.vscodium.sh
 
 popd

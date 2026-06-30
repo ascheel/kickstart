@@ -9,3 +9,4 @@ apt:
   packages:
     - git
     - tmux
+    - vim
