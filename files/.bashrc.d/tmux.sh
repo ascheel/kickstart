@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-tmuxname="ascheel-session"
+tmuxname="$USER"
 
 function t () {
         # tmux has-session -t $tmuxname >/dev/null 2>&1

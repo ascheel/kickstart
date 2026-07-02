@@ -1,0 +1,4 @@
+# Local tmux overrides (deployed to ~/.tmux.conf.local by kickstart).
+
+tmux_conf_battery_status_charging="🔌"
+tmux_conf_battery_status_discharging="🔋"

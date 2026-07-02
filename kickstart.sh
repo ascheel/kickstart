@@ -77,25 +77,33 @@ export TMPDIR="${SCRIPT_DIR}"/tmp
 [[ ! -d "${TMPDIR}" ]] && mkdir "${TMPDIR}"
 # [[ ! -d "${SCRIPT_DIR}"/tmp ]] && mkdir "${SCRIPT_DIR}"/tmp
 
-# Copy Home Files
-source $SCRIPT_DIR/scripts/kickstart.homefiles.sh
+# Let's execute our scripts
+logdir="$TMPDIR/logs"
+mkdir -p "$logdir"
+for script in $SCRIPT_DIR/scripts/kickstart.*.sh
+do
+	logfile="${script##*/}"
+	logfile="$logdir/${logfile%.*}.log"
+	echo "Executing $script -> $logfile"
+	source $script > $logfile 2>&1
+done
+# exit 1
+# # Copy Home Files
+# source $SCRIPT_DIR/scripts/kickstart.homefiles.sh
 
-# Install Golang
-source $SCRIPT_DIR/scripts/kickstart.golang.sh
+# # Install Golang
+# source $SCRIPT_DIR/scripts/kickstart.golang.sh
 
-# .bashrc.d
-source $SCRIPT_DIR/scripts/kickstart.bashrcd.sh
+# # Configure SSH
+# source $SCRIPT_DIR/scripts/kickstart.ssh.sh
 
-# Configure SSH
-source $SCRIPT_DIR/scripts/kickstart.ssh.sh
+# # Configure git
+# source $SCRIPT_DIR/scripts/kickstart.git.sh
 
-# Configure git
-source $SCRIPT_DIR/scripts/kickstart.git.sh
+# # Install VSCodium
+# source $SCRIPT_DIR/scripts/kickstart.vscodium.sh
 
-# Install VSCodium
-source $SCRIPT_DIR/scripts/kickstart.vscodium.sh
-
-# Install Fonts
-source $SCRIPT_DIR/scripts/kickstart.fonts.sh
+# # Install Fonts
+# source $SCRIPT_DIR/scripts/kickstart.fonts.sh
 
 popd
