@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
 # No gitconfig?
 GITCONFIG=~/.gitconfig
 if [[ ! -f $GITCONFIG ]]; then

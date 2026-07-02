@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+shopt -s nullglob
+
 set -e
 
-SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
-CONFIGFILE="${SCRIPT_DIR}/kickstart.yml"
+export SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
+export CONFIGFILE="${SCRIPT_DIR}/kickstart.yml"
 if [[ -n "$WSL_DISTRO_NAME" ]]; then
 	# We're in WSL, so we need to adjust the paths for Windows
 	ISWSL=true
@@ -85,25 +87,7 @@ do
 	logfile="${script##*/}"
 	logfile="$logdir/${logfile%.*}.log"
 	echo "Executing $script -> $logfile"
-	source $script > $logfile 2>&1
+	bash $script > $logfile 2>&1
 done
-# exit 1
-# # Copy Home Files
-# source $SCRIPT_DIR/scripts/kickstart.homefiles.sh
-
-# # Install Golang
-# source $SCRIPT_DIR/scripts/kickstart.golang.sh
-
-# # Configure SSH
-# source $SCRIPT_DIR/scripts/kickstart.ssh.sh
-
-# # Configure git
-# source $SCRIPT_DIR/scripts/kickstart.git.sh
-
-# # Install VSCodium
-# source $SCRIPT_DIR/scripts/kickstart.vscodium.sh
-
-# # Install Fonts
-# source $SCRIPT_DIR/scripts/kickstart.fonts.sh
 
 popd

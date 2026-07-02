@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
 # SSH dir
 SSHDIR=$HOME/.ssh
 if [[ ! -d "$SSHDIR" ]]; then

@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
 # Create the directory
 if [[ ! -d "${HOME}/.bashrc.d" ]]; then
 	echo "Creating ~/.bashrc.d"
